@@ -202,8 +202,24 @@
     }
 
     function HeroSection() {
+      const cursorRef = useRef(null);
+
+      useEffect(() => {
+        const cursor = cursorRef.current;
+        if (!cursor) return;
+        function onMove(e) {
+          cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+        }
+        window.addEventListener("mousemove", onMove);
+        return () => window.removeEventListener("mousemove", onMove);
+      }, []);
+
       return (
-        <section id="home" className="h-screen flex flex-col relative" style={{ overflowX: "clip", background: "#0C0C0C" }}>
+        <section id="home" className="h-screen flex flex-col relative" style={{ overflowX: "clip", background: "#0C0C0C", cursor: "none" }}>
+          <div ref={cursorRef} className="fixed w-16 h-16 pointer-events-none z-[9999] opacity-80 transition-opacity"
+               style={{ transform: "translate3d(-100px, -100px, 0)" }}>
+            <img src={portraitDataUrl} alt="" className="w-full h-full object-cover rounded-full" style={{ filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.5))" }} />
+          </div>
           <Navbar />
 
           <FadeIn delay={0.15} y={40} className="overflow-hidden mt-16 sm:mt-20 md:mt-10 px-6 md:px-10">
@@ -214,20 +230,20 @@
           </FadeIn>
 
           <FadeIn delay={0.6} y={30} className="absolute left-[25%] sm:left-[30%] md:left-[35%] lg:left-[40%] z-10 bottom-8 sm:bottom-12 md:bottom-16 lg:bottom-20 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px]">
-            <Magnet padding={100} strength={1.5}>
-              <div className="relative">
-                <div aria-hidden className="absolute inset-x-0 -bottom-6 h-24 blur-3xl rounded-full"
-                  style={{ background: "radial-gradient(closest-side, rgba(182,0,168,0.35), transparent 70%)" }} />
-                <img
-                  src={portraitDataUrl}
-                  alt="Allen Panjikaran"
-                  className="relative w-full h-auto select-none pointer-events-none"
-                  style={{ filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.6))" }}
-                  draggable="false"
-                />
-              </div>
-            </Magnet>
-          </FadeIn>
+              <Magnet padding={100} strength={1.5}>
+                <div className="relative">
+                  <div aria-hidden className="absolute inset-x-0 -bottom-6 h-24 blur-3xl rounded-full"
+                    style={{ background: "radial-gradient(closest-side, rgba(182,0,168,0.35), transparent 70%)" }} />
+                  <img
+                    src={portraitDataUrl}
+                    alt="Allen Panjikaran"
+                    className="relative w-full h-auto select-none pointer-events-none"
+                    style={{ filter: "drop-shadow(0 30px 60px rgba(0,0,0,0.6))" }}
+                    draggable="false"
+                  />
+                </div>
+              </Magnet>
+            </FadeIn>
 
           <div className="mt-auto flex items-end justify-between px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 relative z-20">
             <FadeIn delay={0.35} y={20}>
@@ -387,7 +403,7 @@
 
     function AboutSection() {
       return (
-        <section id="about" className="relative min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 md:px-10 py-20" style={{ background: "#0C0C0C" }}>
+        <section id="about" className="relative min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 md:px-10 py-20" style={{ background: "#0C0C0C", cursor: "auto" }}>
           <FadeIn delay={0.1} x={-80} duration={0.9} className="absolute top-[4%] left-[1%] sm:left-[2%] md:left-[4%] w-[120px] sm:w-[160px] md:w-[210px]">
             <CornerOrnament kind="moon" />
           </FadeIn>
@@ -433,6 +449,7 @@
       ];
       return (
         <section id="services" className="rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] px-5 sm:px-8 md:px-10 py-20 sm:py-24 md:py-32 relative z-10"
+          style={{ cursor: "auto" }}>
           style={{ background: "#FFFFFF" }}>
           <FadeIn y={30}>
             <h2 className="font-black uppercase text-center"
