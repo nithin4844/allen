@@ -622,7 +622,32 @@
     }
 
     function App() {
-      return (
+      const cursorRef = useRef(null);
+
+      useEffect(() => {
+        const cursor = cursorRef.current;
+        if (!cursor) return;
+        
+        function onMove(e) {
+          cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+          cursor.style.display = "block";
+        }
+        
+        function onLeaveHero() { cursor.style.display = "none"; }
+        
+        window.addEventListener("mousemove", onMove);
+        document.getElementById("home")?.addEventListener("mouseleave", onLeaveHero);
+        document.getElementById("about")?.addEventListener("mouseenter", onLeaveHero);
+        document.getElementById("services")?.addEventListener("mouseenter", onLeaveHero);
+        document.getElementById("projects")?.addEventListener("mouseenter", onLeaveHero);
+        document.getElementById("contact")?.addEventListener("mouseenter", onLeaveHero);
+        
+        return () => {
+          window.removeEventListener("mousemove", onMove);
+        };
+      }, []);
+      
+return (
         <main style={{ background: "#0C0C0C", overflowX: "clip" }}>
           <HeroSection />
           <MarqueeSection />
