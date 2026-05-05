@@ -21,6 +21,8 @@
     }
   </script>
   <style>
+    * { cursor: none !important; }
+    a, button { cursor: none !important; }
     .hero-heading {
       font-family: 'JetBrains Mono', monospace;
       color: #D7E2EA;
@@ -214,7 +216,7 @@
           </FadeIn>
 
           <FadeIn delay={0.6} y={30} className="absolute left-[25%] sm:left-[30%] md:left-[35%] lg:left-[40%] z-10 bottom-8 sm:bottom-12 md:bottom-16 lg:bottom-20 w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px]">
-            <Magnet padding={100} strength={1.5}>
+            <Magnet padding={200} strength={0.8}>
               <div className="relative">
                 <div aria-hidden className="absolute inset-x-0 -bottom-6 h-24 blur-3xl rounded-full"
                   style={{ background: "radial-gradient(closest-side, rgba(182,0,168,0.35), transparent 70%)" }} />
@@ -624,6 +626,42 @@
       return (
         <main style={{ background: "#0C0C0C", overflowX: "clip" }}>
           <HeroSection />
+          {/* Cursor elements */}
+          <div
+            id="cursor-circle"
+            style={{
+              display: "none",
+              position: "fixed",
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              border: "2px solid white",
+              background: "transparent",
+              zIndex: 9999,
+              pointerEvents: "none",
+              boxShadow: "0 0 20px rgba(255,255,255,0.3)",
+              top: 0,
+              left: 0,
+            }}
+          />
+          <img
+            id="mini-cursor"
+            src={portraitDataUrl}
+            alt=""
+            style={{
+              display: "none",
+              position: "fixed",
+              width: 60,
+              height: "auto",
+              borderRadius: "20%",
+              zIndex: 9998,
+              pointerEvents: "none",
+              filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.5))",
+              opacity: 0.8,
+              top: 0,
+              left: 0,
+            }}
+          />
           <MarqueeSection />
           <AboutSection />
           <ServicesSection />
@@ -634,6 +672,26 @@
 
     const root = ReactDOM.createRoot(document.getElementById("root"));
     root.render(<App />);
+
+    document.addEventListener("mousemove", function(e) {
+      const hero = document.getElementById("home");
+      const cursor = document.getElementById("cursor-circle");
+      const mini = document.getElementById("mini-cursor");
+      if (!hero || !cursor || !mini) return;
+      
+      const heroRect = hero.getBoundingClientRect();
+      const isInHero = e.clientY >= heroRect.top && e.clientY <= heroRect.bottom;
+      
+      if (isInHero) {
+        cursor.style.transform = `translate3d(${e.clientX - 20}px, ${e.clientY - 20}px, 0)`;
+        cursor.style.display = "block";
+        mini.style.display = "none";
+      } else {
+        cursor.style.display = "none";
+        mini.style.transform = `translate3d(${e.clientX - 30}px, ${e.clientY - 30}px, 0)`;
+        mini.style.display = "block";
+      }
+    });
   </script>
 </body>
 </html>
