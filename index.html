@@ -202,24 +202,8 @@
     }
 
     function HeroSection() {
-      const cursorRef = useRef(null);
-
-      useEffect(() => {
-        const cursor = cursorRef.current;
-        if (!cursor) return;
-        function onMove(e) {
-          cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-        }
-        window.addEventListener("mousemove", onMove);
-        return () => window.removeEventListener("mousemove", onMove);
-      }, []);
-
       return (
-        <section id="home" className="h-screen flex flex-col relative" style={{ overflowX: "clip", background: "#0C0C0C", cursor: "none" }}>
-          <div ref={cursorRef} className="fixed w-12 h-12 pointer-events-none z-[9999] opacity-90"
-               style={{ marginTop: "-24px", marginLeft: "-24px" }}>
-            <img src={portraitDataUrl} alt="" className="w-full h-full object-cover rounded-full" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }} />
-          </div>
+        <section id="home" className="h-screen flex flex-col relative" style={{ overflowX: "clip", background: "#0C0C0C" }}>
           <Navbar />
 
           <FadeIn delay={0.15} y={40} className="overflow-hidden mt-16 sm:mt-20 md:mt-10 px-6 md:px-10">
@@ -638,8 +622,36 @@
     }
 
     function App() {
+      const cursorRef = useRef(null);
+
+      useEffect(() => {
+        const cursor = cursorRef.current;
+        if (!cursor) return;
+        
+        function onMove(e) {
+          cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+          cursor.style.display = "block";
+        }
+        
+        function onLeaveHero() { cursor.style.display = "none"; }
+        
+        window.addEventListener("mousemove", onMove);
+        document.getElementById("home")?.addEventListener("mouseleave", onLeaveHero);
+        document.getElementById("about")?.addEventListener("mouseenter", onLeaveHero);
+        document.getElementById("services")?.addEventListener("mouseenter", onLeaveHero);
+        document.getElementById("projects")?.addEventListener("mouseenter", onLeaveHero);
+        document.getElementById("contact")?.addEventListener("mouseenter", onLeaveHero);
+        
+        return () => {
+          window.removeEventListener("mousemove", onMove);
+        };
+      }, []);
+      
       return (
         <main style={{ background: "#0C0C0C", overflowX: "clip" }}>
+          <div ref={cursorRef} className="fixed w-12 h-12 pointer-events-none z-[9999] opacity-90 hidden" style={{ marginTop: "-24px", marginLeft: "-24px" }}>
+            <img src="portrait.png" alt="" className="w-full h-full object-cover rounded-full" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }} />
+          </div>
           <HeroSection />
           <MarqueeSection />
           <AboutSection />
