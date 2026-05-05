@@ -216,9 +216,9 @@
 
       return (
         <section id="home" className="h-screen flex flex-col relative" style={{ overflowX: "clip", background: "#0C0C0C", cursor: "none" }}>
-          <div ref={cursorRef} className="fixed w-16 h-16 pointer-events-none z-[9999] opacity-80 transition-opacity"
-               style={{ transform: "translate3d(-100px, -100px, 0)" }}>
-            <img src={portraitDataUrl} alt="" className="w-full h-full object-cover rounded-full" style={{ filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.5))" }} />
+          <div ref={cursorRef} className="fixed w-12 h-12 pointer-events-none z-[9999] opacity-90"
+               style={{ marginTop: "-24px", marginLeft: "-24px" }}>
+            <img src={portraitDataUrl} alt="" className="w-full h-full object-cover rounded-full" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }} />
           </div>
           <Navbar />
 
